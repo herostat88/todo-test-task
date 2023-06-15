@@ -22,17 +22,6 @@ const TaskSchema: Schema<ITaskDocument> = new Schema({
     }
 });
 
-TaskSchema.statics.createTask = (args: ITask) => {
-    return new Task(args);
-}
-
-TaskSchema.statics.findById = async function(
-  this: Model<ITaskDocument>,
-  id: string
-) {
-    return this.findById(id).exec();
-}
-
 const Task = model<ITaskDocument, ITaskModel>("tasks", TaskSchema);
 
 export default Task;

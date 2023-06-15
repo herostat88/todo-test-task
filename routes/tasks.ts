@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import express, { Request, Response } from "express";
 import Task from '../models/task';
-import { ITask, ITaskDocument, ITaskModel } from '../interfaces/ITask';
+import { ITask, ITaskDocument } from '../interfaces/ITask';
 
 // Импортируем авторизацию
 import isAuth from "../controllers/auth.js";
@@ -14,11 +14,21 @@ tasksRouter.use(express.json());
 
 // Отдает список всех задач
 tasksRouter.get("/", isAuth, async (req: Request, res: Response) => {
-    try {
-        //const tasks: Array<ITaskModel> = await collections.tasks.find({}).toArray();
-        const tasks: Array<ITaskDocument> = await Task.find({});
+    const { page = 1, limit = 10 } = req.query;
 
-        return res.status(200).send(tasks);
+    try {
+        const tasks: Array<ITaskDocument> = await Task.find({})
+            .limit(+limit * 1)
+            .skip((+page - 1) * +limit);
+
+        // Считаем общее кол-во тасков в базе
+        const count = await Task.countDocuments();
+
+        return res.status(200).json({
+            tasks,
+            totalPages: Math.ceil(count / +limit),
+            currentPage: page,
+        });
     } catch(error) {
         return res.status(500).send(getErrorMessage(error));
     }
@@ -31,7 +41,7 @@ tasksRouter.post("/", isAuth, async (req: Request, res: Response) => {
         const result = await Task.create(task);
 
         result
-            ? res.status(200).send({'id': result._id})
+            ? res.status(200).json({'id': result._id})
             : res.status(500).send('Unable to create new task');
     } catch(error) {
         return res.status(500).send(getErrorMessage(error));
