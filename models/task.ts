@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import { Schema, Model, model } from 'mongoose';
+import { ITask, ITaskDocument, ITaskModel } from '../interfaces/ITask';
 
-const taskSchema = new Schema({
+const TaskSchema: Schema<ITaskDocument> = new Schema({
     dateCreated: {
         type: Date,
         default: function(){
@@ -22,4 +22,17 @@ const taskSchema = new Schema({
     }
 });
 
-export default mongoose.model("task", taskSchema);
+TaskSchema.statics.createTask = (args: ITask) => {
+    return new Task(args);
+}
+
+TaskSchema.statics.findById = async function(
+  this: Model<ITaskDocument>,
+  id: string
+) {
+    return this.findById(id).exec();
+}
+
+const Task = model<ITaskDocument, ITaskModel>("tasks", TaskSchema);
+
+export default Task;
