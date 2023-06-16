@@ -1,22 +1,16 @@
-import mongoose from "mongoose";
+import { Schema, Model, model } from 'mongoose';
+import { IUser, IUserDocument, IUserModel } from '../interfaces/IUser';
 
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema({
-    dateRegistered: {
+const UserSchema: Schema<IUserDocument> = new Schema({
+    dateCreated: {
         type: Date,
         default: function(){
             return Date.now();
         }
     },
-    name: {
-        type: String,
-        required: true,
-    },
     email: {
         type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
@@ -24,4 +18,6 @@ const userSchema = new Schema({
     }
 });
 
-export default mongoose.model("user", userSchema);
+const User = model<IUserDocument, IUserModel>("users", UserSchema);
+
+export default User;
