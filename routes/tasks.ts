@@ -4,7 +4,7 @@ import Task from '../models/task';
 import { ITask, ITaskDocument } from '../interfaces/ITask';
 
 // Импортируем авторизацию
-import isAuth from "../controllers/auth.js";
+import isAuth from "../controllers/auth";
 
 // Настройка рутера
 export const tasksRouter = express.Router();

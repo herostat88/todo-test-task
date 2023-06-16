@@ -10,6 +10,7 @@ const UserSchema: Schema<IUserDocument> = new Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true,
     },
     password: {

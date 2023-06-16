@@ -1,15 +1,12 @@
 import * as dotenv from 'dotenv';
+import { Request, Response, NextFunction } from "express";
 
 import jwt from 'jsonwebtoken';
 
 // Функция авторизации
-export default function isAuth(req, res, next) {
+export default function isAuth(req: Request, res: Response, next: NextFunction) {
     // Загружаем глобальные переменные
     dotenv.config();
-
-    // FOR TEST ONLY!
-    next();
-    return;
 
     const authHeader = req.get("Authorization");
 
@@ -24,10 +21,10 @@ export default function isAuth(req, res, next) {
 
     // Если токен проходит проверку тогда пропускаем запрос дальше
     try {
-        decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
     } catch (err) {
         // Если проверка проходит с ошибкой тогда отказываем в запросе
-        return res.status(500).json({ message: err.message || 'Could not decode token' });
+        return res.status(500).json({ message: 'Could not decode token' });
     };
 
     // Доп. проверка на случай пустого токена

@@ -1,13 +1,10 @@
 import { Document, Model } from 'mongoose';
 
-export interface ITask {
+export interface IUser {
     dateCreated: Date;
-    isCompleted: boolean;
-    title: string;
-    content: string;
+    email: string;
+    password: string;
 }
 
-export interface ITaskDocument extends ITask, Document {}
-export interface ITaskModel extends Model<ITaskDocument> {
-    createTask(args: ITask): ITaskDocument;
-}
+export interface IUserDocument extends IUser, Document {}
+export interface IUserModel extends Model<IUserDocument> {}

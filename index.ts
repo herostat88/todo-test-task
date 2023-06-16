@@ -4,14 +4,12 @@ import http from 'http';
 import mongoose from 'mongoose';
 import express, { Application } from 'express';
 
-// Импортируем маршрут авторизации
-// import auth from "./routes/auth.js";
-
 // Загружаем глобальные переменные
 dotenv.config();
 
-// Импортируем task API рутер
+// Импортируем API рутеры
 import { tasksRouter } from './routes/tasks';
+import { usersRouter } from './routes/users';
 
 // Создаем сервер
 const app: Application = express();
@@ -23,8 +21,8 @@ mongoose.connect(process.env.MONGO_URL!)
         app.use(express.json());
 
         // Подключаем обработчики маршрутов к серверу
-        // app.use("/auth", auth);
         app.use("/tasks", tasksRouter);
+        app.use("/users", usersRouter);
 
         // Запускаем сервер на выбранном порту
         http.createServer(app).listen(process.env.PORT, () => { console.log(`HTTP Server running on port ${process.env.PORT}`); });

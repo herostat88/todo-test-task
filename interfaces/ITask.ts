@@ -8,6 +8,4 @@ export interface ITask {
 }
 
 export interface ITaskDocument extends ITask, Document {}
-export interface ITaskModel extends Model<ITaskDocument> {
-    createTask(args: ITask): ITaskDocument;
-}
+export interface ITaskModel extends Model<ITaskDocument> {}
